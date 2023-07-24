@@ -1,0 +1,52 @@
+#include <gtest/gtest.h>
+#include <vector>
+#include <string>
+
+// The function we want to test
+bool containsPokemon(const std::vector<std::string>& pokemonList, const std::string& targetPokemon) {
+    // Implementation of the containsPokemon function
+    for (const auto& pokemon : pokemonList) {
+        if (pokemon == targetPokemon) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Test fixture
+class PokemonTest : public ::testing::Test {
+protected:
+    // Test data
+    std::vector<std::string> pokemonList = {"Pikachu", "Charmander", "Squirtle", "Bulbasaur"};
+};
+
+// Test cases
+TEST_F(PokemonTest, PokemonIsInList) {
+    // Test if the function correctly identifies a Pokémon in the list
+    EXPECT_TRUE(containsPokemon(pokemonList, "Pikachu"));
+    EXPECT_TRUE(containsPokemon(pokemonList, "Squirtle"));
+}
+
+TEST_F(PokemonTest, PokemonIsNotInList) {
+    // Test if the function correctly identifies a Pokémon not in the list
+    EXPECT_FALSE(containsPokemon(pokemonList, "Jigglypuff"));
+    EXPECT_FALSE(containsPokemon(pokemonList, "Mewtwo"));
+}
+
+TEST_F(PokemonTest, EmptyList) {
+    // Test if the function handles an empty list correctly
+    std::vector<std::string> emptyList;
+    EXPECT_FALSE(containsPokemon(emptyList, "Pikachu"));
+}
+
+TEST_F(PokemonTest, CaseInsensitive) {
+    // Test if the function is case insensitive
+    EXPECT_TRUE(containsPokemon(pokemonList, "piKAchU"));
+    EXPECT_TRUE(containsPokemon(pokemonList, "bUlBaSaUr"));
+}
+
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
